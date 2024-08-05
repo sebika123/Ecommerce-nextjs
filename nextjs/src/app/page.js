@@ -12,9 +12,8 @@ import {
 import Carousel from "react-material-ui-carousel";
 import MenuIcon from "@mui/icons-material/Menu";
 import Image from "next/image";
-import ProductPage from "./Products/page";
-
 import Link from "next/link";
+import ProductPage from "./Products/page";
 const items = [
   {
     id: "1",
@@ -52,32 +51,26 @@ export default function Home() {
                   width="864"
                   height="464"
                   alt={item.name}
-                  // style={{ width: "80%", height: "auto" }}
                 />
-                {/* <Typography variant="h5" gutterBottom>
-                  {item.name}
-                </Typography>
-                <Typography variant="body1">{item.description}</Typography> */}
               </Box>
             ))}
           </Carousel>
         </Box>
-<Link href="/products">
-<Box my={4}>
-          <Typography variant="h4" gutterBottom>
-            Products
-          </Typography>
-          {items.map((item) => (
-            <ProductPage  
-              key={item.id}
-              name={item.name}
-              description={item.description}
-              image={item.image}
-            />
-          ))}
-           <ProductPage/>
- 
-        </Box></Link>
+        <Link href="/Products" passHref>
+          <Box my={4}>
+            <Typography variant="h4" gutterBottom>
+              Products
+            </Typography>
+            {items.map((item) => (
+              <ProductPage
+                key={item.id}
+                name={item.name}
+                description={item.description}
+                image={item.img} // Ensure this is correct
+              />
+            ))}
+          </Box>
+        </Link>
       </Container>
     </div>
   );
