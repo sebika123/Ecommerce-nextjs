@@ -1,19 +1,14 @@
 "use client";
-import React from "react";
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  AppBar,
-  Toolbar,
-  IconButton,
-} from "@mui/material";
+
+import React, { Suspense, lazy } from "react";
+import { useState } from "react";
+import { Container, Box, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import MenuIcon from "@mui/icons-material/Menu";
 import Image from "next/image";
 import Link from "next/link";
-import ProductPage from "./Products/page";
+import Loader from "../components/Loader"
+const ProductPage = lazy(() => import("./Products/page"));
+
 const items = [
   {
     id: "1",
@@ -35,43 +30,72 @@ const items = [
   },
 ];
 
-export default function Home() {
+export default function Home({ id, name, description, img }) {
+
+  const [isLoading, setIsLoading] = useState(true);
+ 
+    setTimeout(() => {
+        setIsLoading(false);
+    }, 2000);
+
+
   return (
+
+
     <div>
+
+
+
+{isLoading ? (
+                <div
+                    style={{
+                        width: "100px",
+                        margin: "auto",
+                        marginTop:"300px"
+                    }}
+                >
+                    <Loader />
+                </div>
+            ) : (
+               
       <Container>
-        <Box my={4}>
-          <Typography variant="h3" align="center" gutterBottom>
-            Welcome!!!
-          </Typography>
-          <Carousel>
-            {items.map((item, i) => (
-              <Box key={i} textAlign="center">
-                <Image
-                  src={item.img}
-                  width="864"
-                  height="464"
-                  alt={item.name}
-                />
-              </Box>
-            ))}
-          </Carousel>
-        </Box>
-        <Link href="/Products" passHref>
-          <Box my={4}>
-            <Typography variant="h4" gutterBottom>
-              Products
-            </Typography>
-            {items.map((item) => (
-              <ProductPage
-                key={item.id}
-                name={item.name}
-                description={item.description}
-                image={item.img} // Ensure this is correct
+      <Box my={4}>
+        <Typography variant="h3" align="center" gutterBottom>
+          Welcome!!!
+        </Typography>
+        <Carousel>
+          {items.map((item, i) => (
+            <Box key={i} textAlign="center">
+              <Image
+                src={item.img}
+                width="864"
+                height="464"
+                alt={item.name}
               />
-            ))}
-          </Box>
-        </Link>
-      </Container>
+            </Box>
+          ))}
+        </Carousel>
+      </Box>
+      <Link href="/Products" passHref>
+        <Box my={4}>
+          <Suspense fallback={<div>Loading Product Page...</div>}>
+            <ProductPage
+              key={id}
+              name={name}
+              description={description}
+              image={img}
+            />
+          </Suspense>
+        </Box>
+      </Link>
+    </Container>
+            )}
+
+
+
+
+
+
     </div>
   );
 }
